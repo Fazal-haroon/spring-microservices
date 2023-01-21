@@ -1,8 +1,6 @@
 package com.example.demo.user;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +22,10 @@ public class UserResource {
     @GetMapping("/users/{id}")
     public User findUser(@PathVariable int id) {
         return userDaoService.findOne(id);
+    }
+
+    @PostMapping("/users")
+    public void createUser(@RequestBody User user) {
+        userDaoService.save(user);
     }
 }
