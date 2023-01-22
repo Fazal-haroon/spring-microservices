@@ -1,5 +1,6 @@
-package com.example.demo.user;
+package com.example.demo.user.service;
 
+import com.example.demo.user.entity.User;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -24,7 +25,7 @@ public class UserDaoService {
     
     public User findOne(int id) {
         Predicate<? super User> predicate = user -> user.getId().equals(id);
-        return userList.stream().filter(predicate).findFirst().get();
+        return userList.stream().filter(predicate).findFirst().orElse(null);
     }
 
     public User save(User user){
