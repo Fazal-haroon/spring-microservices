@@ -4,12 +4,16 @@ import com.example.demo.user.entity.User;
 import com.example.demo.user.service.UserDaoService;
 import com.example.demo.user.exception.UserNotFoundException;
 import jakarta.validation.Valid;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 public class UserResource {
@@ -27,12 +31,15 @@ public class UserResource {
     }
 
     @GetMapping("/users/{id}")
-    public User findUserById(@PathVariable int id) {
+    public EntityModel<User> findUserById(@PathVariable int id) {
         User user = userDaoService.findOne(id);
         if(user == null){
             throw new UserNotFoundException("id not found :: " + id);
         }
-        return user;
+        EntityModel<User> entityModel = EntityModel.of(user);
+        WebMvcLinkBuilder linkBuilder = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+        entityModel.add(linkBuilder.withRel("all-users"));
+        return entityModel;
     }
 
     @DeleteMapping("/users/{id}")
