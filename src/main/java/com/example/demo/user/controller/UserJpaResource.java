@@ -1,5 +1,6 @@
 package com.example.demo.user.controller;
 
+import com.example.demo.user.entity.Post;
 import com.example.demo.user.entity.User;
 import com.example.demo.user.exception.UserNotFoundException;
 import com.example.demo.user.repository.UserRepository;
@@ -48,6 +49,15 @@ public class UserJpaResource {
     @DeleteMapping("/jpa/users/{id}")
     public void deleteUserById(@PathVariable int id) {
         userDaoService.deleteById(id);
+    }
+
+    @GetMapping("/jpa/users/{id}/post")
+    public List<Post> listOfPostByUserId(@PathVariable int id) {
+        Optional<User> user = userDaoService.findById(id);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("id not found :: " + id);
+        }
+        return user.get().getPostList();
     }
 
     @PostMapping("/jpa/users")
