@@ -1,7 +1,9 @@
 package com.example.demo.filtering;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties("field1")
 public class SomeBean {
 
     private String field1;
