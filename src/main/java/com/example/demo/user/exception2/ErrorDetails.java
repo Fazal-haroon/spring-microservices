@@ -1,6 +1,5 @@
 package com.example.demo.user.exception2;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ErrorDetails {
