@@ -1,4 +1,4 @@
-package com.example.limitsservice;
+package com.example.limitsservice.bean;
 
 public class LimitConfiguration {
     private Integer maximum;
