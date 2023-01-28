@@ -1,5 +1,6 @@
 package com.example.currencyconversionservice;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +14,12 @@ import java.util.Map;
 @RestController
 public class CurrencyConversionController {
 
+    @Autowired
+    private CurrencyExchangeServiceProxy currencyExchangeServiceProxy;
+
     @GetMapping("/currency-exchange/from/{from}/to/{to}/quantity/{quantity}")
     public CurrencyConversionBean convertCurrency(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
-
+        //Feign - Problem by using RestTemplate
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("from", from);
         uriVariables.put("to", to);
@@ -23,6 +27,15 @@ public class CurrencyConversionController {
                 new RestTemplate().getForEntity("http://localhost:8000/currency-exchange/from/{from}/to/{to}", CurrencyConversionBean.class, uriVariables);
 
         CurrencyConversionBean response = responseEntity.getBody();
+
+        return new CurrencyConversionBean(response.getId(), from, to, response.getConversionMultiple(), quantity,
+                quantity.multiply(response.getConversionMultiple()), response.getPort());
+    }
+
+    @GetMapping("/currency-exchange-feign/from/{from}/to/{to}/quantity/{quantity}")
+    public CurrencyConversionBean convertCurrencyFeign(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
+        //Feign - Problem Solve by Feign
+        CurrencyConversionBean response = currencyExchangeServiceProxy.retrieveExchangeValue(from, to);
 
         return new CurrencyConversionBean(response.getId(), from, to, response.getConversionMultiple(), quantity,
                 quantity.multiply(response.getConversionMultiple()), response.getPort());

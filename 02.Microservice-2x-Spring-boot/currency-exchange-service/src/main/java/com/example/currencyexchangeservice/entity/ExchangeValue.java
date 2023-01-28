@@ -1,4 +1,4 @@
-package com.example.currencyexchangeservice;
+package com.example.currencyexchangeservice.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
