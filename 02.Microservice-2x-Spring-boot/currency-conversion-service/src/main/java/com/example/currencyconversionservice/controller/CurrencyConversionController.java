@@ -1,5 +1,7 @@
-package com.example.currencyconversionservice;
+package com.example.currencyconversionservice.controller;
 
+import com.example.currencyconversionservice.proxy.CurrencyExchangeServiceProxy;
+import com.example.currencyconversionservice.entity.CurrencyConversionBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
