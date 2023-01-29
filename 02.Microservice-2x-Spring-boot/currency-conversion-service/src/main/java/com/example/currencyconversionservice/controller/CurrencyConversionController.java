@@ -19,6 +19,9 @@ public class CurrencyConversionController {
     @Autowired
     private CurrencyExchangeServiceProxy currencyExchangeServiceProxy;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @GetMapping("/currency-exchange/from/{from}/to/{to}/quantity/{quantity}")
     public CurrencyConversionBean convertCurrency(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
         //Feign - Problem by using RestTemplate
@@ -26,7 +29,22 @@ public class CurrencyConversionController {
         uriVariables.put("from", from);
         uriVariables.put("to", to);
         ResponseEntity<CurrencyConversionBean> responseEntity =
-                new RestTemplate().getForEntity("http://localhost:8000/currency-exchange/from/{from}/to/{to}", CurrencyConversionBean.class, uriVariables);
+                restTemplate.getForEntity("http://localhost:8000/currency-exchange/from/{from}/to/{to}", CurrencyConversionBean.class, uriVariables);
+
+        CurrencyConversionBean response = responseEntity.getBody();
+
+        return new CurrencyConversionBean(response.getId(), from, to, response.getConversionMultiple(), quantity,
+                quantity.multiply(response.getConversionMultiple()), response.getPort());
+    }
+
+    @GetMapping("/currency-exchange2/from/{from}/to/{to}/quantity/{quantity}")
+    public CurrencyConversionBean convertCurrency2(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
+        //Feign - Problem by using RestTemplate
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("from", from);
+        uriVariables.put("to", to);
+        ResponseEntity<CurrencyConversionBean> responseEntity =
+                restTemplate.getForEntity("http://localhost:8001/currency-exchange/from/{from}/to/{to}", CurrencyConversionBean.class, uriVariables);
 
         CurrencyConversionBean response = responseEntity.getBody();
 
