@@ -1,4 +1,4 @@
-package com.example.netflixzuulapigatewayserver;
+package com.example.netflixzuulapigatewayserver.filter;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -26,13 +26,13 @@ public class ZuulLoggingFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        return false;
+        return true;
     }
 
     @Override
     public Object run() throws ZuulException {
         HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
-        logger.info("Request -> {} request uri -> {}", request, request.getRequestURI());
+        logger.info("** Request ** -> {} ** Request URI ** -> {}", request, request.getRequestURI());
         return null;
     }
 }
