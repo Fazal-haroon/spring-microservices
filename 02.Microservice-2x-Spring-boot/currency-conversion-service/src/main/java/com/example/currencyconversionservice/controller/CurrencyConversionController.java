@@ -2,6 +2,8 @@ package com.example.currencyconversionservice.controller;
 
 import com.example.currencyconversionservice.proxy.CurrencyExchangeServiceProxy;
 import com.example.currencyconversionservice.entity.CurrencyConversionBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ import java.util.Map;
 
 @RestController
 public class CurrencyConversionController {
+
+    private Logger logger = LoggerFactory.getLogger(CurrencyConversionController.class);
 
     @Autowired
     private CurrencyExchangeServiceProxy currencyExchangeServiceProxy;
@@ -56,6 +60,8 @@ public class CurrencyConversionController {
     public CurrencyConversionBean convertCurrencyFeign(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
         //Feign - Problem Solve by Feign - Feign is Rest Service Client
         CurrencyConversionBean response = currencyExchangeServiceProxy.retrieveExchangeValue(from, to);
+
+        logger.info("** CurrencyConversionController.convertCurrencyFeign method {} **", response);
 
         return new CurrencyConversionBean(response.getId(), from, to, response.getConversionMultiple(), quantity,
                 quantity.multiply(response.getConversionMultiple()), response.getPort());

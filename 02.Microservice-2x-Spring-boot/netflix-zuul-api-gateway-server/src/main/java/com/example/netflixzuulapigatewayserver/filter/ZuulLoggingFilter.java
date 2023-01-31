@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class ZuulLoggingFilter extends ZuulFilter {
 
-    private static Logger logger = LoggerFactory.getLogger(ZuulLoggingFilter.class);
+    private Logger logger = LoggerFactory.getLogger(ZuulLoggingFilter.class);
 
     @Override
     public String filterType() {

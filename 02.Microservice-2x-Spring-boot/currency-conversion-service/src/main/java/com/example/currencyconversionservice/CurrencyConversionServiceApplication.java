@@ -1,5 +1,6 @@
 package com.example.currencyconversionservice;
 
+import brave.sampler.Sampler;
 import com.example.currencyconversionservice.config.RibbonConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +25,11 @@ public class CurrencyConversionServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CurrencyConversionServiceApplication.class, args);
+	}
+
+	@Bean
+	public Sampler defaultSampler(){
+		return Sampler.ALWAYS_SAMPLE;
 	}
 
 }
