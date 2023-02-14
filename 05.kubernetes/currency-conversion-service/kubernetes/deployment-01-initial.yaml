@@ -2,16 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"currency-exchange-service"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"currency-exchange-service"}]},"modified":true}'
+    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"currency-conversion-service"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"currency-conversion-service"}]},"modified":true}'
     deployment.kubernetes.io/revision: "1"
   labels:
-    app: currency-exchange
-  name: currency-exchange
+    app: currency-conversion
+  name: currency-conversion
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: currency-exchange
+      app: currency-conversion
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -20,12 +20,12 @@ spec:
   template:
     metadata:
       labels:
-        app: currency-exchange
+        app: currency-conversion
     spec:
       containers:
-      - image: fazalharoon/currency-exchange-service:0.0.11-SNAPSHOT
+      - image: fazalharoon/currency-conversion-service:0.0.11-SNAPSHOT
         imagePullPolicy: IfNotPresent
-        name: currency-exchange-service
+        name: currency-conversion-service
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -34,15 +34,15 @@ metadata:
   annotations:
     cloud.google.com/neg: '{"ingress":true}'
   labels:
-    app: currency-exchange
-  name: currency-exchange
+    app: currency-conversion
+  name: currency-conversion
   namespace: default
 spec:
   ports:
-    - port: 8000
+    - port: 8100
       protocol: TCP
-      targetPort: 8000
+      targetPort: 8100
   selector:
-    app: currency-exchange
+    app: currency-conversion
   sessionAffinity: None
   type: LoadBalancer
