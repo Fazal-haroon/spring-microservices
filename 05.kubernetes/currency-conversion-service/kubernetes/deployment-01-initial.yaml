@@ -23,9 +23,12 @@ spec:
         app: currency-conversion
     spec:
       containers:
-      - image: fazalharoon/currency-conversion-service:0.0.11-SNAPSHOT
+      - image: fazalharoon/currency-conversion-service:0.0.12-SNAPSHOT
         imagePullPolicy: IfNotPresent
         name: currency-conversion-service
+        env:
+          - name: CURRENCY_EXCHANGE_URI
+            value: http://currency-exchange
       restartPolicy: Always
 ---
 apiVersion: v1
